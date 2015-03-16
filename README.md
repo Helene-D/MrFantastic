@@ -11,10 +11,7 @@ MrFantastic is an webapplication built with Polymer and Firebase
 * Run `http-server`
 * Go to `localhost:8080`
 * Install bower `npm install -g bower`
-<<<<<<< Updated upstream
 * Install dependencies `bower install` in MrFantastic folder
-=======
 * Make installation of dependencies `bower install` in MrFantastic folder
 
 ## [Online demo](http://perruche.github.io/MrFantastic/)
->>>>>>> Stashed changes
