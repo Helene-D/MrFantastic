@@ -4,7 +4,10 @@
   "homepage": "https://github.com/perruche/MrFantastic",
   "authors": [
     "Thibaut Maurice <eveningforgery@gmail.com>",
-    "Ludovic Janot <ludo.janot@gmail.com>"
+    "Ludovic Janot <ludo.janot@gmail.com>",
+    "Hélène Distel <distel.helene@gmail.com>",
+    "Martin Humbert <martinhumbert67@gmail.com>",
+    "Aurélie Jolibert <lilybobo0974@gmail.com>"
   ],
   "description": "Manage your comics library",
   "main": "index.html",
