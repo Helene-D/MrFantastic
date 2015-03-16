@@ -2,7 +2,7 @@
 
 ##Manage your comics library
 
-MrFantastic is an webapplication built with Polymer and Firebase
+MrFantastic is a webapplication built with Polymer and Firebase
 
 ## How to install MrFantastic locally ?
 
@@ -13,5 +13,6 @@ MrFantastic is an webapplication built with Polymer and Firebase
 * Install http-server `npm install -g http-server`
 * Run `http-server`
 * Go to `localhost:8080`
-
+fefef
 ## [Online demo](http://perruche.github.io/MrFantastic/)
+f
