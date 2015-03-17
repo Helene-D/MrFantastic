@@ -1,0 +1,37 @@
+/*
+ * comicvine-api element
+ */
+
+// Default variables
+// $blue: blue !default;
+
+// Styling...
+
+comicvine-api::shadow {
+  ul {
+    padding: 0;
+    li {
+      list-style: none;
+      background: $white;
+      color: $grey900;
+      border-radius: 2px;
+      box-shadow: $shadow-1;
+      transition: box-shadow 0.2s ease-in-out;
+      padding: 20px;
+      margin-bottom: 20px;
+      &:hover {
+        box-shadow: $shadow-2;;;
+      }
+      img {
+        float: left;
+        margin-right: 15px;
+      }
+      p {
+        margin: 0;
+      }
+      h2 {
+        margin-top: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+/*
+ * paper-tabs element
+ */
+
+// Default variables
+// $blue: blue !default;
+
+// Styling...
+
+paper-tabs {
+  &::shadow {
+    #selectionBar {
+      background-color: $blue500;
+    }
+  }
+  paper-tab {
+    &::shadow {
+      #ink {
+        color: $blue500;
+      }
+    }
+  }
+}

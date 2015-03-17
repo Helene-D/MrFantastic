@@ -22,10 +22,10 @@
   <meta name="format-detection" content="telephone=no">
 
   <link rel="shortcut icon" href="favicon.ico">
-  <link rel="icon" sizes="196x196" href="icons/icon-196.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="icons/iPad@2x.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="icons/Icon-72@2x.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="icons/iPhone@2x.png">
+  <link rel="icon" sizes="196x196" href="img/icons/icon-196.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="img/icons/iPad@2x.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="img/icons/Icon-72@2x.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="img/icons/iPhone@2x.png">
 
   <meta name="application-name" content="MrFantastic">
 
@@ -48,6 +48,9 @@
 
   <!-- Import bower_components -->
   <link rel="import" href="bower_components/font-roboto/roboto.html">
+  <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+  <link rel="import" href="bower_components/paper-input/paper-input.html">
+  <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 
   <!-- Import custom components -->
   <link rel="import" href="fantastic_components/comicvine-api/comicvine-api.html">
@@ -58,8 +61,33 @@
   <script src="js/hello.js"></script>
 </head>
 <body>
+  <core-toolbar class="medium-tall">
+    <div flex>Logo</div>
+    <!-- <my-account></my-account> -->
+    <!-- <search-bar></search-bar> -->
+    <div flex>
+      
+    </div>
 
-  <comicvine-api method="search" query="batman" limit="10" resources="volume" page="1"></comicvine-api>
+    <div class="bottom fit" horizontal layout reverse>
+    
+      <paper-tabs selected="0" flex style="max-width: 600px;">
+    
+        <paper-tab>ITEM ONE</paper-tab>
+        <paper-tab>ITEM TWO</paper-tab>
+        <paper-tab>ITEM THREE</paper-tab>
+        
+      </paper-tabs>
+      
+    </div>
+  
+  </core-toolbar>
+  
+  <div class="container">
+    <comicvine-api method="search" query="batman" limit="10" resources="volume" page="1"></comicvine-api>
+  </div>
+
+
 
 </body>
 </html>

@@ -2,16 +2,6 @@
 
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
-    <style>
-      img {
-        float: left;
-        margin-right: 15px;
-      }
-
-      li {
-        list-style: none;
-      }
-    </style>
     <core-ajax 
       auto 
       url="http://comicvine.com/api/{{method}}/" 
@@ -23,7 +13,7 @@
       <h1>{{numResults}} Results</h1>
       <ul>
         <template repeat="{{ r in results }}">
-          <li>
+          <li class="shadow-1">
             <img src="{{ r.image.icon_url }}" alt="{{r.name}}">
             <h2>{{r.name}}</h2>
             <p>{{r.start_year}}</p>
