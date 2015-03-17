@@ -1,24 +1,51 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="comicvine-api" attributes="ressource query limit page">
+<polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
-    <core-ajax  auto 
-                url="http://api.comicvine.com/{{ressource}}/?api_key={{api_key}}&query={{query}}&format={{format}}&limit={{limit}}&page={{page}}" 
-                handleAs="json"
-                on-core-response="{{ajaxResponse}}">
+    <style>
+      img {
+        float: left;
+        margin-right: 15px;
+      }
+
+      li {
+        list-style: none;
+      }
+    </style>
+    <core-ajax 
+      auto 
+      url="http://comicvine.com/api/{{method}}/" 
+      handleAs="json" 
+      on-core-response="{{ajaxResponse}}" 
+      params='{ "api_key" : "{{api_key}}","limit" : "{{limit}}", "format" : "{{format}}", "query" : "{{query}}",  "page" : "{{page}}", "resources" : "{{resources}}" }'>
     </core-ajax>
+    <div id="wrapper">
+      <h1>{{numResults}} Results</h1>
+      <ul>
+        <template repeat="{{ r in results }}">
+          <li>
+            <img src="{{ r.image.icon_url }}" alt="{{r.name}}">
+            <h2>{{r.name}}</h2>
+            <p>{{r.start_year}}</p>
+            <p>{{r.publisher.name}}</p>
+          </li>
+        </template>
+      </ul>
+    </div>
   </template>
   <script>
-    Polymer({
+    //TODO: Pagination
+    //TODO: No result found <conditionnal template>
+    Polymer('comicvine-api',{
       ajaxResponse: function(event, response) {
-        this.results = response;
-        console.log(this.results);
+        this.results = response.response.results;
+        this.numResults = this.results.length;
       },
       ready: function() {
         this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
         this.format = "json";
-      }
+        this.results = []
+      },
     });
   </script>
 </polymer-element>
