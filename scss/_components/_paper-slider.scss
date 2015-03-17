@@ -1,0 +1,17 @@
+/*
+ * paper-slider element
+ */
+
+// Default variables
+
+// Styling...
+
+* /deep/ paper-slider {
+  &::shadow {
+    #sliderKnobInner,
+    #sliderKnobInner::before,
+    #sliderBar::shadow #activeProgress {
+      background-color: $blue500;
+    }
+  }
+}

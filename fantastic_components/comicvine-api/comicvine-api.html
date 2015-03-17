@@ -12,7 +12,7 @@
     </core-ajax>
 
     <template if="{{hasResults && !init}}">
-      <h1>{{numResults}} Results</h1>
+      <h3>{{numResults}} Results</h3>
       <ul>
         <template repeat="{{ r in results }}">
           <li class="shadow-1">
@@ -25,7 +25,7 @@
       </ul>
     </template>
     <template if="{{!hasResults && !init}}">
-      <h1>Nothing found</h1>
+      <h3>Nothing found</h3>
     </template>
 
   </template>

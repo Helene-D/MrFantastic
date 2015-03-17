@@ -11,7 +11,7 @@
 -->
 <html lang="en">
 <head>
-  <title>MrFantastic </title>
+  <title>MrFantastic &bullet; Manage your collection</title>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
@@ -58,38 +58,28 @@
   <!-- Import css -->
   <link rel="stylesheet" href="css/app.css" shim-shadowdom>
 
+  <!-- Hello, human -->
   <script src="js/hello.js"></script>
-  
-  <style>
-    /* TODO: Move to common.scss */
-    body {
-      font-family: "RobotoDraft", helvetica, arial, sans-serif;
-    }
-  </style>
 </head>
 <body>
+
   <core-toolbar class="medium-tall">
     <div flex>
-      Logo
+      MrFantastic
     </div>
     <!-- <my-account></my-account> -->
-    <!-- <search-bar></search-bar> -->
     <div class="bottom fit" horizontal layout reverse>
       <paper-tabs selected="0" flex style="max-width: 600px;">
         <paper-tab>Collection</paper-tab>
         <paper-tab>Search</paper-tab>
         <paper-tab>Wishlist</paper-tab>
       </paper-tabs>
-      
     </div>
-  
   </core-toolbar>
   
   <div class="container">
     <search-engine></search-engine>
   </div>
-
-
 
 </body>
 </html>
