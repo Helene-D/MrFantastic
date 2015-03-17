@@ -30,7 +30,10 @@ search-engine::shadow comicvine-api::shadow {
         margin: 0;
       }
       h2 {
-        margin-top: 0;
+        margin: {
+          top: 0;
+          bottom: 5px;
+        };
       }
     }
   }
