@@ -59,17 +59,26 @@
   <link rel="stylesheet" href="css/app.css" shim-shadowdom>
 
   <script src="js/hello.js"></script>
+  
+  <style>
+    /* TODO: Move to common.scss */
+    body {
+      font-family: "RobotoDraft", helvetica, arial, sans-serif;
+    }
+  </style>
 </head>
 <body>
   <core-toolbar class="medium-tall">
-    <div flex>Logo</div>
+    <div flex>
+      Logo
+    </div>
     <!-- <my-account></my-account> -->
     <!-- <search-bar></search-bar> -->
     <div class="bottom fit" horizontal layout reverse>
       <paper-tabs selected="0" flex style="max-width: 600px;">
-        <paper-tab>ITEM ONE</paper-tab>
-        <paper-tab>ITEM TWO</paper-tab>
-        <paper-tab>ITEM THREE</paper-tab>
+        <paper-tab>Collection</paper-tab>
+        <paper-tab>Search</paper-tab>
+        <paper-tab>Wishlist</paper-tab>
       </paper-tabs>
       
     </div>
