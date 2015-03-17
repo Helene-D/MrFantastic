@@ -1,0 +1,24 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="comicvine-api" attributes="ressource query limit page">
+  <template>
+    <core-ajax  auto 
+                url="http://api.comicvine.com/{{ressource}}/?api_key={{api_key}}&query={{query}}&format={{format}}&limit={{limit}}&page={{page}}" 
+                handleAs="json"
+                on-core-response="{{ajaxResponse}}">
+    </core-ajax>
+  </template>
+  <script>
+    Polymer({
+      ajaxResponse: function(event, response) {
+        this.results = response;
+        console.log(this.results);
+      },
+      ready: function() {
+        this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
+        this.format = "json";
+      }
+    });
+  </script>
+</polymer-element>

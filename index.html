@@ -34,7 +34,7 @@
   Since Chrome 35 does not have HTMLImports, we can use this as a decent signal
   to force the ShadowDOM Polyfill.
   -->
-  <script>fire
+  <script>
     if (!('import' in document.createElement('link'))) {
       var Platform = {flags: {shadow: true}};
     }
@@ -50,9 +50,7 @@
   <link rel="import" href="bower_components/font-roboto/roboto.html">
 
   <!-- Import custom components -->
-  <!-- 
-  <link rel="import" href="fantastic_components/component/component.html">
-  -->
+  <link rel="import" href="fantastic_components/comicvine-api/comicvine-api.html">
 
   <!-- Import css -->
   <link rel="stylesheet" href="css/app.css" shim-shadowdom>
@@ -66,6 +64,10 @@
     #     # #      #      #      #    #    #  #  # #    # #####  #      #    # 
     #     # #      #      #      #    #    #  #  # #    # #   #  #      #    # 
     #     # ###### ###### ######  ####      ## ##   ####  #    # ###### #####
+    check console
   </pre>
+
+  <comicvine-api ressource="search" query="sandman+mystery+theatre" limit="10"></comicvine-api>
+
 </body>
 </html>
