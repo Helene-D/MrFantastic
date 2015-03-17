@@ -2,6 +2,7 @@
 
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
+  
     <core-ajax 
       auto 
       url="http://comicvine.com/api/{{method}}/" 
@@ -9,7 +10,8 @@
       on-core-response="{{ajaxResponse}}" 
       params='{ "api_key" : "{{api_key}}","limit" : "{{limit}}", "format" : "{{format}}", "query" : "{{query}}",  "page" : "{{page}}", "resources" : "{{resources}}" }'>
     </core-ajax>
-    <div id="wrapper">
+
+    <template if="{{hasResults && !init}}">
       <h1>{{numResults}} Results</h1>
       <ul>
         <template repeat="{{ r in results }}">
@@ -21,20 +23,28 @@
           </li>
         </template>
       </ul>
-    </div>
+    </template>
+    <template if="{{!hasResults && !init}}">
+      <h1>Nothing found</h1>
+    </template>
+
   </template>
   <script>
     //TODO: Pagination
-    //TODO: No result found <conditionnal template>
     Polymer('comicvine-api',{
       ajaxResponse: function(event, response) {
         this.results = response.response.results;
-        this.numResults = this.results.length;
+        this.numResults = response.response.number_of_total_results;
+        this.hasResults = false;
+        if (this.numResults != 0) {
+          this.init = false;
+          this.hasResults = true;
+        }
       },
       ready: function() {
+        this.init = true;
         this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
         this.format = "json";
-        this.results = []
       },
     });
   </script>
