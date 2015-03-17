@@ -1,17 +1,18 @@
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../comicvine-api/comicvine-api.html">
 
 <polymer-element name="search-engine" attributes="">
   <template>
-    <paper-input value="{{val}}"></paper-input>
-    <comicvine-api method="search" query="{{val}}" limit="10" resources="volume" page="1"></comicvine-api>
+    <form horizontal layout>
+      <paper-input value="{{query}}" label="Try to search something" flex></paper-input>
+      <paper-slider min="10" max="100" step="10" value="{{limit}}" editable snaps></paper-slider>
+    </form>
+    <comicvine-api method="search" query="{{query}}" limit="{{limit}}" resources="volume" page="{{page}}"></comicvine-api>
   </template>
   <script>
     Polymer('search-engine',{
-      ready: function() {
-        console.log()
-      },
     });
   </script>
 </polymer-element>
