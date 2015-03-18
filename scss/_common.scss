@@ -15,7 +15,8 @@ body {
   font-family: "RobotoDraft", Helvetica, Arial, sans-serif;
   margin: 0px;
   background-color: $grey800;
-  color: $white
+  color: $white;
+  overflow-y: scroll
 }
 
 .container {

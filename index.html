@@ -51,6 +51,7 @@
   <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
   <link rel="import" href="bower_components/paper-input/paper-input.html">
   <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+  <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
 
   <!-- Import custom components -->
   <link rel="import" href="fantastic_components/search-engine/search-engine.html">
@@ -62,7 +63,6 @@
   <script src="js/hello.js"></script>
 </head>
 <body>
-
   <core-toolbar class="medium-tall">
     <div flex>
       MrFantastic
@@ -76,10 +76,28 @@
       </paper-tabs>
     </div>
   </core-toolbar>
-  
-  <div class="container">
-    <search-engine></search-engine>
-  </div>
 
+  <core-animated-pages>
+    <section>
+      
+    </section>
+    <section>
+      <div class="container">
+        <search-engine></search-engine>
+      </div>
+    </section>
+    <section>
+      
+    </section>
+  </core-animated-pages>
+  
+  <script>
+    // Dealing with paper-tabs & core-animated pages
+    var pages = document.querySelector('core-animated-pages');
+    var tabs = document.querySelector('paper-tabs');
+    tabs.addEventListener('core-select', function () {
+      pages.selected = tabs.selected;
+    });
+  </script>
 </body>
 </html>
