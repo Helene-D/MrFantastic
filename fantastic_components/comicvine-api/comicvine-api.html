@@ -5,8 +5,8 @@
   
     <core-ajax 
       auto 
-      url="http://comicvine.com/api/{{method}}/" 
-      handleAs="json" 
+      url="//api.comicvine.com/{{method}}/" 
+      handleAs="{{format}}" 
       on-core-response="{{ajaxResponse}}" 
       params='{ "api_key" : "{{api_key}}","limit" : "{{limit}}", "format" : "{{format}}", "query" : "{{query}}",  "page" : "{{page}}", "resources" : "{{resources}}" }'>
     </core-ajax>
@@ -15,7 +15,7 @@
       <h3>{{numResults}} Results</h3>
       <ul>
         <template repeat="{{ r in results }}">
-          <li class="shadow-1">
+          <li>
             <img src="{{ r.image.icon_url }}" alt="{{r.name}}">
             <h2>{{r.name}}</h2>
             <p>{{r.start_year}}</p>
