@@ -2,24 +2,28 @@
 
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
-  
+   <!-- params='{ "api_key" : "{{api_key}}","limit" : "{{limit}}", "format" : "{{format}}", "query" : "{{query}}",  "page" : "{{page}}", "resources" : "{{resources}}" }' -->
     <core-ajax 
       auto 
-      url="//api.comicvine.com/{{method}}/" 
+      url="//jsonp.nodejitsu.com/" 
       handleAs="{{format}}" 
       on-core-response="{{ajaxResponse}}" 
-      params='{ "api_key" : "{{api_key}}","limit" : "{{limit}}", "format" : "{{format}}", "query" : "{{query}}",  "page" : "{{page}}", "resources" : "{{resources}}" }'>
+      params='{ "url" : "http://www.comicvine.com/api/{{method}}/?api_key={{api_key}}&limit={{limit}}&format={{format}}&query={{query}}&page=&resources={{resources}}" }'>
     </core-ajax>
 
     <template if="{{hasResults && !init}}">
       <h3>{{numResults}} Results</h3>
       <ul>
         <template repeat="{{ r in results }}">
-          <li>
-            <img src="{{ r.image.icon_url }}" alt="{{r.name}}">
-            <h2>{{r.name}}</h2>
-            <p>{{r.start_year}}</p>
-            <p>{{r.publisher.name}}</p>
+          <li layout horizontal>
+            <div>
+              <img src="{{ r.image.thumb_url }}" alt="{{r.name}}">
+            </div>
+            <div flex>
+              <h2>{{r.name}}</h2>
+              <p>{{r.start_year}}</p>
+              <p>{{r.publisher.name}}</p>
+            </div>
           </li>
         </template>
       </ul>
@@ -27,7 +31,6 @@
     <template if="{{!hasResults && !init}}">
       <h3>Nothing found</h3>
     </template>
-
   </template>
   <script>
     //TODO: Pagination
