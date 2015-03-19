@@ -10,17 +10,24 @@
 search-engine::shadow comicvine-api::shadow {
   ul {
     padding: 0;
+    position: relative;
     li {
       list-style: none;
       background: $white;
+      min-height: 100%;
       color: $grey900;
       border-radius: 2px;
+      min-width: 30%;
       box-shadow: $shadow-1;
       transition: box-shadow 0.2s ease-in-out;
       padding: 20px;
-      margin-bottom: 20px;
+      margin: {
+        bottom: 20px;
+        left: 10px;
+        right: 10px;
+      }
       &:hover {
-        box-shadow: $shadow-2;;;
+        box-shadow: $shadow-2;
       }
       img {
         float: left;

@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../../bower_components/core-media-query/core-media-query.html">
 
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
@@ -12,14 +13,15 @@
     </core-ajax>
 
     <template if="{{hasResults && !init}}">
+      <core-media-query query="max-width: 768px" queryMatches="{{phoneScreen}}"></core-media-query>
       <h3>{{numResults}} Results</h3>
-      <ul>
+      <ul layout vertical?="{{phoneScreen}}" horizontal?="{{!phoneScreen}}" wrap?="{{!phoneScreen}}">
         <template repeat="{{ r in results }}">
-          <li layout horizontal>
+          <li layout horizontal flex?="{{!phoneScreen}}">
             <div>
               <img src="{{ r.image.thumb_url }}" alt="{{r.name}}">
             </div>
-            <div flex>
+            <div>
               <h2>{{r.name}}</h2>
               <p>{{r.start_year}}</p>
               <p>{{r.publisher.name}}</p>
