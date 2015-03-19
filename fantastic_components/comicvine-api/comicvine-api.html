@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../../bower_components/core-media-query/core-media-query.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/core-icons/core-icons.html">
 
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
@@ -17,15 +19,23 @@
       <h3>{{numResults}} Results</h3>
       <ul layout vertical?="{{phoneScreen}}" horizontal?="{{!phoneScreen}}" wrap?="{{!phoneScreen}}">
         <template repeat="{{ r in results }}">
-          <li layout horizontal flex?="{{!phoneScreen}}">
+          <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
             <div>
-              <img src="{{ r.image.thumb_url }}" alt="{{r.name}}">
+              <img src="{{ r.image.super_url }}" alt="{{r.name}}">
             </div>
-            <div>
-              <h2>{{r.name}}</h2>
+            <div class="infos" flex>
+              <h2 id="comicName">{{r.name}}</h2>
               <p>{{r.start_year}}</p>
               <p>{{r.publisher.name}}</p>
             </div>
+            <paper-fab id="addButton" icon="add" on-click="{{add}}" toggle></paper-fab>
+            <template if="{{!comic.isInCollection}}">
+              <!-- If is not In collection show add button -->
+            </template>
+            <template if="{{comic.isInCollection}}">
+              <!-- If is In Collection show delete button -->
+              <paper-fab icon="clear" on-click="{{delete}}"></paper-fab>
+            </template>
           </li>
         </template>
       </ul>
@@ -35,7 +45,6 @@
     </template>
   </template>
   <script>
-    //TODO: Pagination
     Polymer('comicvine-api',{
       ajaxResponse: function(event, response) {
         this.results = response.response.results;
@@ -50,7 +59,68 @@
         this.init = true;
         this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
         this.format = "json";
+        this.collection = []
       },
+      add: function(e, detail, sender) {
+        var comic = e.target.templateInstance.model.r;
+        comic.isInCollection = false;
+
+        // If this object is not in collection
+        if (this.collection.indexOf(comic) == -1) {
+
+          // Push into collection
+          this.collection.push(comic);
+          console.log(this.collection);
+
+          // Modify and show toast (notification)
+          toast_element = document.getElementById('success');
+          toast_element.text = 'Added '+ comic.name +' to your collection !';
+          toast_element.show();
+
+          comic.isInCollection = true;
+        }  
+        else {
+          toast_element = document.getElementById('error');
+          toast_element.text = 'You already have '+ comic.name +' in your collection...';
+          toast_element.show();
+        }
+
+        var addButton = document.getElementById('addButton');
+        addButton.onclick = '{{delete}}';
+        addButton.icon = "clear"
+      },
+      delete: function(e, detail, sender) {
+        var comic = e.target.templateInstance.model.r;
+
+        // Remove from collection
+        if (this.collection.indexOf(comic) > -1) {
+          this.collection.splice(this.collection.indexOf(comic));
+          console.log(this.collection);
+          // Modify and show toast (notification)
+          toast_element = document.getElementById('success');
+          toast_element.text = 'Deleted '+ comic.name +' from your collection';
+          toast_element.show();
+
+          comic.isInCollection = false;
+        }
+        else {
+          toast_element = document.getElementById('error');
+          toast_element.text = 'You haven\'t '+ comic.name +' in your collection...';
+          toast_element.show();
+        }
+      },
+      isInCollection: function(e, collection, comicName) {
+        for (var i = 0; i < collection.length; i++) {
+          if (collection[i] === comic) {
+            return true;
+            console.log(true)
+          }
+          else {
+            return false;
+            console.log(false)
+          }
+        };
+      }
     });
   </script>
 </polymer-element>

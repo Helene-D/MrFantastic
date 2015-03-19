@@ -21,6 +21,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
   <meta name="format-detection" content="telephone=no">
 
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="icon" sizes="196x196" href="img/icons/icon-196.png">
   <link rel="apple-touch-icon" sizes="152x152" href="img/icons/iPad@2x.png">
@@ -51,6 +54,7 @@
   <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
   <link rel="import" href="bower_components/paper-input/paper-input.html">
   <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+  <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
   <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
 
   <!-- Import custom components -->
@@ -71,7 +75,7 @@
     <div class="bottom fit" horizontal layout reverse>
       <paper-tabs selected="0" flex style="max-width: 600px;">
         <paper-tab>Collection</paper-tab>
-        <paper-tab>Search</paper-tab>
+        <paper-tab>Browse</paper-tab>
         <paper-tab>Wishlist</paper-tab>
       </paper-tabs>
     </div>
@@ -91,6 +95,11 @@
     </section>
   </core-animated-pages>
   
+
+
+  <paper-toast id="success" class="capsule" text="Success !"></paper-toast>
+  <paper-toast id="error" role="alert" text="Error">
+  </paper-toast>
   <script>
     // Dealing with paper-tabs & core-animated pages
     var pages = document.querySelector('core-animated-pages');
