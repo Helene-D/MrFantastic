@@ -1,0 +1,27 @@
+/*
+ * search-engine element
+ */
+
+// Default variables
+// $blue: blue !default;
+
+// Styling...
+
+html /deep/ search-engine::shadow {
+  form {
+    padding: {
+      left: 25px;
+      right: 25px;
+      top: 10px;
+      bottom: 10px;
+    }
+    background: $white;
+    /deep/ paper-input {
+      /deep/ .focused-underline {
+        background: $blue500;
+      }
+      color: $black;
+    }
+
+  }
+}

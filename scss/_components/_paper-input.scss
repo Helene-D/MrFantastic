@@ -6,7 +6,7 @@
 
 // Styling...
 
-* /deep/ paper-input {
+html /deep/ paper-input {
   /deep/ .focused-underline {
     background: $blue500;
   }

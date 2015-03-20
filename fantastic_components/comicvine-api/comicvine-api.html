@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../../bower_components/core-media-query/core-media-query.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/core-icons/core-icons.html">
 
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
@@ -33,50 +34,56 @@
 
     <template if="{{hasResults && !init}}">
       <core-media-query query="max-width: 768px" queryMatches="{{phoneScreen}}"></core-media-query>
-      <h3>{{numResults}} Results</h3>
-      <script>
-      this.collection.toString();
-      </script>
-      <ul layout vertical?="{{phoneScreen}}" horizontal?="{{!phoneScreen}}" wrap?="{{!phoneScreen}}">
-        <template repeat="{{ r in results }}">
-          <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
-            <div>
-              <img src="{{ r.image.super_url }}" alt="{{r.name}}">
-            </div>
-            <div class="infos" flex>
-              <h2 id="comicName">{{r.name}}</h2>
-              <p>{{r.start_year}}</p>
-              <p>{{r.publisher.name}}</p>
-            </div>
-            <paper-fab id="addButton" icon="add" on-click="{{add}}"></paper-fab>
-          </li>
-        </template>
-      </ul>
+      <div class="container">
+        <h3 style="margin-left: 10px;">{{numResults}} Results</h3>
+        <ul layout vertical?="{{phoneScreen}}" horizontal?="{{!phoneScreen}}" wrap?="{{!phoneScreen}}">
+          <template repeat="{{ r in results }}">
+            <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
+              <div>
+                <img src="{{ r.image.super_url }}" alt="{{r.name}}">
+              </div>
+              <div class="infos" flex>
+                <h2 id="comicName">{{r.name}}</h2>
+                <p>{{r.start_year}}</p>
+                <p>{{r.publisher.name}}</p>
+              </div>
+              <paper-icon-button id="addWishlist" icon="favorite" on-click="{{addToWishlist}}"></paper-icon-button>
+              <paper-fab id="addCollection" icon="add" on-click="{{addToCollection}}"></paper-fab>
+            </li>
+          </template>
+        </ul>
+      </div>
     </template>
     <template if="{{!hasResults && !init}}">
       <h3>Nothing found</h3>
     </template>
   </template>
   <script>
+  (function() {
+    var collection = [];
+    var wishlist = [];
+
     Polymer('comicvine-api',{
       ajaxResponse: function(event, response) {
         this.results = response.response.results;
         this.numResults = response.response.number_of_total_results;
         this.hasResults = false;
+        // turn off Initialization
         if (this.numResults != 0) {
           this.init = false;
           this.hasResults = true;
+          this.icon = "add";
         }
       },
       ready: function() {
+        // Initialization
         this.init = true;
-        this.query = "batman"
         this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
         this.format = "json";
-        this.collection = []
-        this.icon = "add";
+        this.collection = collection;
+        this.wishlist = wishlist;
       },
-      add: function(e, detail, sender) {
+      addToCollection: function(e, detail, sender) {
         var comic = e.target.templateInstance.model.r;
 
         // If this object is not in collection
@@ -84,7 +91,6 @@
 
           // Push into collection
           this.collection.push(comic);
-          console.log(this.collection);
 
           // Modify and show toast (notification)
           toast_element = document.getElementById('success');
@@ -93,6 +99,7 @@
 
           // Set clear icon to e.target paper-fab
           e.target.setAttribute('icon', 'clear');
+
         }  
         else {
 
@@ -101,7 +108,6 @@
 
             // Remove from collection
             this.collection.splice(this.collection.indexOf(comic));
-            console.log(this.collection);
 
             // Modify and show toast (notification)
             toast_element = document.getElementById('success');
@@ -116,8 +122,51 @@
             toast_element.text = 'You haven\'t '+ comic.name +' in your collection...';
             toast_element.show();
           }
+
         }
       },
+      addToWishlist: function(e, detail, sender) {
+        var comic = e.target.templateInstance.model.r;
+
+        // If this object is not in wishlist
+        if (this.wishlist.indexOf(comic) == -1) {
+          
+          // Push into wishlist 
+          this.wishlist.push(comic);
+
+          // Modify and show toast (notification)
+          toast_element = document.getElementById('success');
+          toast_element.text = 'Added '+ comic.name +' to your wishlist !';
+          toast_element.show();
+
+          // Change icon color
+          e.target.setAttribute("class", "active")
+        }
+        else {
+
+          // If this object is in wishlist
+          if (this.wishlist.indexOf(comic) > -1) {
+
+            // Remove from wishlist
+            this.wishlist.splice(this.wishlist.indexOf(comic));
+
+            // Modify and show toast (notification)
+            toast_element = document.getElementById('success');
+            toast_element.text = 'Deleted '+ comic.name +' from your wishlist';
+            toast_element.show();
+
+            // Change icon color
+            e.target.setAttribute("class", "inactive")
+          }
+          else {
+            toast_element = document.getElementById('error');
+            toast_element.text = 'You haven\'t '+ comic.name +' in your wishlist...';
+            toast_element.show();
+          }
+        }
+      }
     });
+  })();
+
   </script>
 </polymer-element>

@@ -6,7 +6,8 @@
 <polymer-element name="search-engine" attributes="">
   <template>
     <form horizontal layout>
-      <paper-input value="{{query}}" label="Search" flex></paper-input>
+      <paper-input value="{{query}}" label="Search"></paper-input>
+      <div flex></div>
       <paper-slider min="10" max="100" step="10" value="{{limit}}" editable snaps></paper-slider>
     </form>
     <comicvine-api method="search" query="{{query}}" limit="{{limit}}" resources="volume" page="{{page}}"></comicvine-api>

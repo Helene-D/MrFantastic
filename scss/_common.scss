@@ -16,12 +16,19 @@ body {
   margin: 0px;
   background-color: $grey800;
   color: $white;
-  overflow-y: scroll
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-.container {
+html /deep/ .container {
   padding: {
-    left: 30px;
-    right: 30px;
+    left: 10px;
+    right: 10px;
+  }
+}
+
+html /deep/ #logo {
+  margin: {
+    left: 20px;
   }
 }

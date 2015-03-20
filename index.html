@@ -11,7 +11,7 @@
 -->
 <html lang="en">
 <head>
-  <title>MrFantastic &bullet; Manage your collection</title>
+  <title>MrFantastic &bullet; Join the comics league</title>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
@@ -20,7 +20,6 @@
   <meta name="apple-touch-fullscreen" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
   <meta name="format-detection" content="telephone=no">
-
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -43,7 +42,7 @@
     }
   </script>
 
-  <!-- Import Polymer -->
+  <!-- Import webcomponentjs for Chrome 36 and older -->
   <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
 
   <!-- Import Vendors -->
@@ -56,6 +55,7 @@
   <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
   <link rel="import" href="bower_components/paper-toast/paper-toast.html">
   <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/slide-from-right.html">
 
   <!-- Import custom components -->
   <link rel="import" href="fantastic_components/search-engine/search-engine.html">
@@ -63,50 +63,63 @@
   <!-- Import css -->
   <link rel="stylesheet" href="css/app.css" shim-shadowdom>
 
-  <!-- Hello, human 
+  <!-- Hello, human -->
   <script src="js/hello.js"></script>
-  -->
 </head>
 <body unresolved fullbleed>
-  <core-toolbar class="medium-tall">
-    <div flex>
+
+  <!-- Navigation bar -->
+  <core-toolbar class="medium-tall animate">
+    <div id="logo" flex>
       MrFantastic
     </div>
-    <!-- <my-account></my-account> -->
-    <div class="bottom fit" horizontal layout reverse>
-      <paper-tabs selected="0" flex style="max-width: 600px;">
-        <paper-tab>Collection</paper-tab>
+
+    <!-- Navigation tabs -->
+    <div class="bottom fit" horizontal layout >
+      <paper-tabs selected="0" flex >
         <paper-tab>Browse</paper-tab>
+        <paper-tab>Collection</paper-tab>
         <paper-tab>Wishlist</paper-tab>
       </paper-tabs>
+      <!-- <user-account></user-account> -->
     </div>
   </core-toolbar>
 
-  <core-animated-pages>
-    <section id="collection">
+  
+  <core-animated-pages transitions="slide-from-right">
 
-    </section>
-    <section id="browse">
-      <div class="container">
+    <!-- Browse page -->
+    <div id="browse">
         <search-engine></search-engine>
-      </div>
-    </section id="wishlist">
-    <section>
+    </div>
+
+    <!-- Collection page -->
+    <div id="collection">
+
+    </div>
+
+    <!-- Wishlist page -->
+    <div id="wishlist">
       
-    </section>
+    </div>
+
   </core-animated-pages>
   
 
-
+  <!-- Notifications -->
   <paper-toast id="success" class="capsule" text="Success !"></paper-toast>
-  <paper-toast id="error" role="alert" text="Error">
-  </paper-toast>
+  <paper-toast id="error" role="alert" text="Error..."></paper-toast>
+
   <script>
-    // Dealing with paper-tabs & core-animated pages
+    // Link between paper-tabs & core-animated-pages
     var pages = document.querySelector('core-animated-pages');
     var tabs = document.querySelector('paper-tabs');
     tabs.addEventListener('core-select', function () {
       pages.selected = tabs.selected;
+    });
+
+    (function() {
+      
     });
   </script>
 </body>

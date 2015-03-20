@@ -6,7 +6,7 @@
 
 // Styling...
 
-* /deep/ paper-slider {
+html /deep/ paper-slider {
   &::shadow {
     #sliderKnobInner,
     #sliderKnobInner::before,
