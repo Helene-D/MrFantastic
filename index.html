@@ -48,17 +48,8 @@
   <!-- Import Vendors -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-  <!-- Import bower_components -->
-  <link rel="import" href="bower_components/font-roboto/roboto.html">
-  <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-  <link rel="import" href="bower_components/paper-input/paper-input.html">
-  <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
-  <link rel="import" href="bower_components/paper-toast/paper-toast.html">
-  <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
-  <link rel="import" href="bower_components/core-animated-pages/transitions/slide-from-right.html">
-
-  <!-- Import custom components -->
-  <link rel="import" href="fantastic_components/search-engine/search-engine.html">
+  <!-- Import webapp -->
+  <link rel="import" href="fantastic_components/fantastic-app/fantastic-app.html">
 
   <!-- Import css -->
   <link rel="stylesheet" href="css/app.css" shim-shadowdom>
@@ -67,60 +58,6 @@
   <script src="js/hello.js"></script>
 </head>
 <body unresolved fullbleed>
-
-  <!-- Navigation bar -->
-  <core-toolbar class="medium-tall animate">
-    <div id="logo" flex>
-      MrFantastic
-    </div>
-
-    <!-- Navigation tabs -->
-    <div class="bottom fit" horizontal layout >
-      <paper-tabs selected="0" flex >
-        <paper-tab>Browse</paper-tab>
-        <paper-tab>Collection</paper-tab>
-        <paper-tab>Wishlist</paper-tab>
-      </paper-tabs>
-      <!-- <user-account></user-account> -->
-    </div>
-  </core-toolbar>
-
-  
-  <core-animated-pages transitions="slide-from-right">
-
-    <!-- Browse page -->
-    <div id="browse">
-        <search-engine></search-engine>
-    </div>
-
-    <!-- Collection page -->
-    <div id="collection">
-
-    </div>
-
-    <!-- Wishlist page -->
-    <div id="wishlist">
-      
-    </div>
-
-  </core-animated-pages>
-  
-
-  <!-- Notifications -->
-  <paper-toast id="success" class="capsule" text="Success !"></paper-toast>
-  <paper-toast id="error" role="alert" text="Error..."></paper-toast>
-
-  <script>
-    // Link between paper-tabs & core-animated-pages
-    var pages = document.querySelector('core-animated-pages');
-    var tabs = document.querySelector('paper-tabs');
-    tabs.addEventListener('core-select', function () {
-      pages.selected = tabs.selected;
-    });
-
-    (function() {
-      
-    });
-  </script>
+  <fantastic-app></fantastic-app>
 </body>
 </html>

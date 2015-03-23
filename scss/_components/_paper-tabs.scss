@@ -7,7 +7,7 @@
 
 // Styling...
 
-paper-tabs {
+html /deep/ paper-tabs {
   &::shadow {
     #selectionBar {
       background-color: $blue500;

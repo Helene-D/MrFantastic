@@ -10,10 +10,19 @@
       <div flex></div>
       <paper-slider min="10" max="100" step="10" value="{{limit}}" editable snaps></paper-slider>
     </form>
-    <comicvine-api method="search" query="{{query}}" limit="{{limit}}" resources="volume" page="{{page}}"></comicvine-api>
+    
+    <comicvine-api method="search" query="{{query}}" limit="{{limit}}" resources="volume" page="{{page}}" id="comic"></comicvine-api>
   </template>
   <script>
     Polymer('search-engine',{
+      ready: function() {
+        // TODO: make comicvine-api more reusable by using this kind of import
+        // this.limit = document.querySelector('comicvine-api').limit;
+        // and use: {{limit}}
+        // will be usefull for creating alternative content
+        this.collection = this.$.comic.collection
+        this.wishlist = this.$.comic.wishlist
+      }
     });
   </script>
 </polymer-element>

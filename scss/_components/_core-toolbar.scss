@@ -7,7 +7,7 @@
 
 // Styling...
 
-core-toolbar {
+html /deep/ core-toolbar {
   background: $grey900;
   color: $white;
 }

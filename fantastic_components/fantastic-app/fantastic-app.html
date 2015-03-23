@@ -1,0 +1,85 @@
+<!-- Import bower_components -->
+<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../../bower_components/core-animated-pages/transitions/slide-from-right.html">
+
+<!-- Import custom components -->
+<link rel="import" href="../search-engine/search-engine.html">
+
+<polymer-element name="fantastic-app" attributes="">
+  <template>
+    <!-- Navigation bar -->
+    <core-toolbar class="medium-tall animate">
+      <div id="logo" flex>
+        MrFantastic
+      </div>
+
+      <!-- Navigation tabs -->
+      <div class="bottom fit" horizontal layout >
+        <paper-tabs selected="0" flex id="navigation">
+          <paper-tab>Browse</paper-tab>
+          <paper-tab>Collection</paper-tab>
+          <paper-tab>Wishlist</paper-tab>
+        </paper-tabs>
+        <!-- <user-account></user-account> -->
+      </div>
+    </core-toolbar>
+
+    <core-animated-pages transitions="slide-from-right" id="slides">
+
+      <!-- Browse page -->
+      <div id="browse">
+        <search-engine id="search"></search-engine>
+      </div>
+
+      <!-- Collection page -->
+      <div id="collection">
+        <ul>
+          <template repeat="{{ c in collection }}">
+            <li>
+              {{ c.name }} {{ c.start_year }}
+            </li>
+          </template>
+        </ul>
+      </div>
+
+      <!-- Wishlist page -->
+      <div id="wishlist">
+        <ul>
+          <template repeat="{{ w in wishlist }}">
+            <li>
+              {{ w.name }} {{ w.start_year }}
+            </li>
+          </template>
+        </ul>
+      </div>
+
+    </core-animated-pages>
+    
+    <!-- Notifications -->
+    <paper-toast id="success" class="capsule" text="Success !"></paper-toast>
+    <paper-toast id="error" role="alert" text="Error..."></paper-toast>
+  </template>
+  <script>
+    (function() {
+
+      Polymer('fantastic-app',{
+      ready: function() {
+        this.collection = this.$.search.$.comic.collection
+        this.wishlist = this.$.search.$.comic.wishlist
+
+        // Link between paper-tabs & core-animated-pages
+        var tabs = this.$.navigation
+        var pages = this.$.slides
+          tabs.addEventListener('core-select', function () {
+            pages.selected = tabs.selected;
+          });
+      }
+    });
+
+    })();
+  </script>
