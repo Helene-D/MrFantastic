@@ -17,7 +17,7 @@
     <template if="{{hasResults && !init}}">
       <core-media-query query="max-width: 768px" queryMatches="{{phoneScreen}}"></core-media-query>
       <div class="container">
-        <h3 style="margin-left: 10px;">{{limit}} of {{numResults}} Results</h3>
+        <h3 style="margin-left: 10px;">{{displayedResults}} of {{numResults}} Results</h3>
         <ul layout vertical?="{{phoneScreen}}" horizontal?="{{!phoneScreen}}" wrap?="{{!phoneScreen}}">
           <template repeat="{{ r in results }}">
             <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
@@ -56,6 +56,11 @@
           this.init = false;
           this.hasResults = true;
           this.icon = "add";
+          if( this.numResults < this.limit ) {
+            this.displayedResults = this.numResults;
+          } else {
+            this.displayedResults = this.limit
+          }
         }
       },
       ready: function() {
@@ -72,9 +77,17 @@
         // If this object is not in collection
         if (this.collection.indexOf(comic) == -1) {
 
-          // Push into collection
-          this.collection.push(comic);
 
+          var collectionIssue = []
+
+          for(i=1;i<=comic.count_of_issues; i++) {
+           collectionIssue.push( false )
+          };
+          comic.issues = collectionIssue
+          this.collection.push(comic)
+
+          // Push into collection
+          console.log(this.collection)
           // Modify and show toast (notification)
           toast_element = document.querySelector('fantastic-app::shadow #success');
           toast_element.text = 'Added '+ comic.name +' to your collection !';

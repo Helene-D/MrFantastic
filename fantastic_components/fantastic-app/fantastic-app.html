@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/font-roboto/roboto.html">
 <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
@@ -38,10 +39,27 @@
 
       <!-- Collection page -->
       <div id="collection">
-        <ul>
-          <template repeat="{{ c in collection }}">
+        <h3>Your collection is empty, let's <a href="#" on-click="{{goBrowse}}">browse</a> in order to add some comics !</h3>
+        <ul layout vertical>
+          <template repeat="{{ comic in collection }}">
             <li>
-              {{ c.name }} {{ c.start_year }}
+              <div layout horizontal>
+                <div flex>
+                  {{ comic.name }}
+                </div>
+                <div>
+                  {{ comic.start_year }}
+                </div>
+              </div>
+              <ul layout vertical>
+                <template repeat="{{ issue, i in comic.issues }}">
+                  <li layout horizontal>
+                    <div flex>
+                      <paper-checkbox label="#{{i+1}}" checked="{{issue}}" on-tap="{{checkChanged}}"></paper-checkbox>
+                    </div>
+                  </li>
+                </template>
+              </ul>
             </li>
           </template>
         </ul>
@@ -49,10 +67,11 @@
 
       <!-- Wishlist page -->
       <div id="wishlist">
-        <ul>
+        <ul layout vertical>
           <template repeat="{{ w in wishlist }}">
-            <li>
-              {{ w.name }} {{ w.start_year }}
+            <li layout horizontal>
+              <div flex>{{ w.name }}</div>
+              <div>{{ w.start_year }}</div>
             </li>
           </template>
         </ul>
@@ -68,18 +87,30 @@
     (function() {
 
       Polymer('fantastic-app',{
-      ready: function() {
-        this.collection = this.$.search.$.comic.collection
-        this.wishlist = this.$.search.$.comic.wishlist
+        ready: function() {
+          this.collection = this.$.search.$.comic.collection
+          this.wishlist = this.$.search.$.comic.wishlist
 
-        // Link between paper-tabs & core-animated-pages
-        var tabs = this.$.navigation
-        var pages = this.$.slides
+          // Link between paper-tabs & core-animated-pages
+          var tabs = this.$.navigation
+          var pages = this.$.slides
           tabs.addEventListener('core-select', function () {
             pages.selected = tabs.selected;
           });
-      }
-    });
+        },
+        goBrowse: function() {
+          var pages = this.$.slides
+          var tabs = this.$.navigation
+          pages.selected = 0;
+          tabs.selected = 0;
+        },
+        checkChanged: function(e, detail, sender) {
+          var checkbox = e.target.templateInstance.model.issue
+          //TODO: WRONNNNG
+          //var issue = e.target.templateInstance.model.comic.issues[i]
+
+        }
+      });
 
     })();
   </script>
