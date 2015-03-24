@@ -77,17 +77,21 @@
         // If this object is not in collection
         if (this.collection.indexOf(comic) == -1) {
 
+          var firstIssueString = comic.first_issue.issue_number;
+          var firstIssue = parseInt(firstIssueString, 10);
+
+          comic.starting_issue = firstIssue;
 
           var collectionIssue = []
-
-          for(i=1;i<=comic.count_of_issues; i++) {
-           collectionIssue.push( false )
+          for( i = comic.starting_issue ; i <= comic.count_of_issues ; i++ ) {
+            collectionIssue.push( false );
           };
-          comic.issues = collectionIssue
-          this.collection.push(comic)
+          comic.issues = collectionIssue;
 
           // Push into collection
-          console.log(this.collection)
+          this.collection.push(comic);
+          console.log(this.collection);
+          
           // Modify and show toast (notification)
           toast_element = document.querySelector('fantastic-app::shadow #success');
           toast_element.text = 'Added '+ comic.name +' to your collection !';

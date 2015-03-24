@@ -39,7 +39,7 @@
 
       <!-- Collection page -->
       <div id="collection">
-        <h3>Your collection is empty, let's <a href="#" on-click="{{goBrowse}}">browse</a> in order to add some comics !</h3>
+        <!-- <h3>Oops ! Your collection is empty, let's <a href="#" on-click="{{ goBrowse }}">browse</a> in order to add some comics !</h3> -->
         <ul layout vertical>
           <template repeat="{{ comic in collection }}">
             <li>
@@ -55,7 +55,7 @@
                 <template repeat="{{ issue, i in comic.issues }}">
                   <li layout horizontal>
                     <div flex>
-                      <paper-checkbox label="#{{i+1}}" checked="{{issue}}" on-tap="{{checkChanged}}"></paper-checkbox>
+                      <paper-checkbox label="#{{ comic.starting_issue + i }}" checked="{{ issue }}" on-tap="{{ checkChanged }}"></paper-checkbox>
                     </div>
                   </li>
                 </template>
@@ -103,12 +103,9 @@
           var tabs = this.$.navigation
           pages.selected = 0;
           tabs.selected = 0;
-        },
-        checkChanged: function(e, detail, sender) {
-          var checkbox = e.target.templateInstance.model.issue
-          //TODO: WRONNNNG
-          //var issue = e.target.templateInstance.model.comic.issues[i]
-
+        }
+        checkChanged: function() {
+          
         }
       });
 
