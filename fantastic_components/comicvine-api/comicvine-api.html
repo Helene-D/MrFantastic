@@ -22,7 +22,7 @@
           <template repeat="{{ r in results }}">
             <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
               <div>
-                <img src="{{ r.image.super_url }}" alt="{{r.name}}">
+                <img src="{{ r.image.screen_url }}" alt="{{r.name}}">
               </div>
               <div class="infos" flex>
                 <h2 id="comicName">{{r.name}}</h2>

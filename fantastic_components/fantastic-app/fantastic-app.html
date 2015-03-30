@@ -7,6 +7,7 @@
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../../bower_components/core-animated-pages/transitions/slide-from-right.html">
+<link rel="import" href="../../bower_components/core-collapse/core-collapse.html">
 
 <!-- Import custom components -->
 <link rel="import" href="../search-engine/search-engine.html">
@@ -41,25 +42,33 @@
       <div id="collection">
         <!-- <h3>Oops ! Your collection is empty, let's <a href="#" on-click="{{ goBrowse }}">browse</a> in order to add some comics !</h3> -->
         <ul layout vertical>
-          <template repeat="{{ comic in collection }}">
+          <template repeat="{{ comic, i in collection }}">
             <li>
-              <div layout horizontal>
-                <div flex>
-                  {{ comic.name }}
-                </div>
-                <div>
-                  {{ comic.start_year }}
+              <div class="comicHead" on-click="{{ toggle }}">
+                <img src="{{ comic.image.super_url }}" alt="{{ comic.name }}" class="comicBg">
+                <div horizontal layout>
+                  <div>
+                    <h4 style="text-transform: uppercase">{{ comic.name }}</h4>
+                  </div>
+                  <div flex>
+                    <h4>{{ comic.publisher.name }}</h4>
+                  </div>
+                  <div>
+                    <h4>{{ comic.start_year }}</h4>
+                  </div>
                 </div>
               </div>
-              <ul layout vertical>
-                <template repeat="{{ issue, i in comic.issues }}">
-                  <li layout horizontal>
-                    <div flex>
-                      <paper-checkbox label="#{{ comic.starting_issue + i }}" checked="{{ issue }}" on-tap="{{ checkChanged }}"></paper-checkbox>
-                    </div>
-                  </li>
-                </template>
-              </ul>
+              <core-collapse id="collapse{{i}}">
+                <ul layout vertical>
+                  <template repeat="{{ issue, i in comic.issues }}">
+                    <li layout horizontal on-click="{{ labelChecked }}">
+                      <div flex horizontal layout>
+                        <paper-checkbox label="#{{ comic.starting_issue + i }}" checked="{{ issue }}" flex></paper-checkbox>
+                      </div>
+                    </li>
+                  </template>
+                </ul>
+              </core-collapse>
             </li>
           </template>
         </ul>
@@ -103,9 +112,11 @@
           var tabs = this.$.navigation
           pages.selected = 0;
           tabs.selected = 0;
-        }
-        checkChanged: function() {
-          
+        },
+        toggle: function(e, detail, sender) {
+          //document.querySelector('#collapse').toggle();
+          this.querySelector('fantastic-app::shadow #collapse' + e.target.templateInstance.model.i).toggle();
+          console.log();
         }
       });
 

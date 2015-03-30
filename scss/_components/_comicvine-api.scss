@@ -42,7 +42,7 @@ html /deep/ comicvine-api::shadow {
   ul {
     padding: 0;
     position: relative;
-    li {
+    li.comic {
       list-style: none;
       background: $black;
       position: relative;
@@ -71,9 +71,11 @@ html /deep/ comicvine-api::shadow {
         margin-right: 15px;
         position: absolute;
         right: 0;
-        width: 100%;
-        top: -50%;
+        top: 0;
         left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 204px;
         z-index: 1;
         opacity: 0.5;
         transition: opacity 0.2s ease-in-out;
