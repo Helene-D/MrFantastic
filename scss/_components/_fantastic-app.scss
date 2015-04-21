@@ -6,7 +6,7 @@
 
 // Styling...
 
-fantastic-app::shadow {
+html /deep/ fantastic-app::shadow {
   #collection {
     ul {
       list-style: none;

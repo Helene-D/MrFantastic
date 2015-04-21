@@ -9,15 +9,29 @@
 <link rel="import" href="../../bower_components/core-animated-pages/transitions/slide-from-right.html">
 <link rel="import" href="../../bower_components/core-collapse/core-collapse.html">
 
+<!-- Firebase elements-->
+<link rel="import" href="/bower_components/firebase-element/firebase-element.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-login.html">
+
+<!-- PVC Globals element -->
+<link rel="import" href="/bower_components/pvc-globals/pvc-globals.html">
+
 <!-- Import custom components -->
 <link rel="import" href="../search-engine/search-engine.html">
 
 <polymer-element name="fantastic-app" attributes="">
   <template>
+    <pvc-globals values="{{ globals }}"></pvc-globals>
+    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://flickering-fire-1231.firebaseio.com/user" log></firebase-element>
+    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://flickering-fire-1231.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
+
     <!-- Navigation bar -->
     <core-toolbar class="medium-tall animate">
       <div id="logo" flex>
         MrFantastic
+      </div>
+      <div>
+        <paper-button on-click="{{ logout }}">Logout</paper-button>
       </div>
 
       <!-- Navigation tabs -->
@@ -87,7 +101,7 @@
       </div>
 
     </core-animated-pages>
-    
+
     <!-- Notifications -->
     <paper-toast id="success" class="capsule" text="Success !"></paper-toast>
     <paper-toast id="error" role="alert" text="Error..."></paper-toast>
@@ -117,7 +131,10 @@
           //document.querySelector('#collapse').toggle();
           this.querySelector('fantastic-app::shadow #collapse' + e.target.templateInstance.model.i).toggle();
           console.log();
-        }
+        },
+        logout: function() {
+          this.$.baseLogin.logout();
+        },
       });
 
     })();

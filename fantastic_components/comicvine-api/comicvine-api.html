@@ -4,14 +4,23 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/core-icons/core-icons.html">
 
+<!-- Firebase element-->
+<link rel="import" href="../../bower_components/firebase-element/firebase-element.html">
+
+<!-- PVC Globals element -->
+<link rel="import" href="../../bower_components/pvc-globals/pvc-globals.html">
+
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
 
-    <core-ajax 
-      auto 
-      url="//jsonp.nodejitsu.com/" 
-      handleAs="{{format}}" 
-      on-core-response="{{ajaxResponse}}" 
+    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://flickering-fire-1231.firebaseio.com/user/{{uid}}" log></firebase-element>
+    <pvc-globals values="{{ globals }}" id="globals"></pvc-globals>
+
+    <core-ajax
+      auto
+      url="//jsonp.nodejitsu.com/"
+      handleAs="{{format}}"
+      on-core-response="{{ajaxResponse}}"
       params='{ "url" : "http://www.comicvine.com/api/{{method}}/?api_key={{api_key}}&limit={{limit}}&format={{format}}&query={{query}}&page=&resources={{resources}}" }'>
     </core-ajax>
     <template if="{{hasResults && !init}}">
@@ -63,14 +72,19 @@
           }
         }
       },
+      dataChanged: function() {
+        console.log(this.data)
+      },
       ready: function() {
+
         // Initialization
         this.init = true;
         this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
         this.format = "json";
         this.collection = collection;
-        this.collectionLength = this.collection.length
+        this.collectionLength = this.collection.length;
         this.wishlist = wishlist;
+        this.uid = this.globals.currentUser.uid
       },
       addToCollection: function(e, detail, sender) {
         var comic = e.target.templateInstance.model.r;
@@ -90,8 +104,7 @@
 
           // Push into collection
           this.collection.push(comic);
-          console.log(this.collection);
-          
+
           // Modify and show toast (notification)
           toast_element = document.querySelector('fantastic-app::shadow #success');
           toast_element.text = 'Added '+ comic.name +' to your collection !';
@@ -99,7 +112,13 @@
 
           // Set clear icon to e.target paper-fab
           e.target.setAttribute('icon', 'clear');
-        }  
+
+          //Firebase
+          var ref = new Firebase(this.$.base.location);
+          var myUid = this.globals.currentUser.uid;
+
+          ref.child("collection").set(this.collection);
+        }
         else {
 
           // If this object is in collection
@@ -115,6 +134,12 @@
 
             // Set add icon to e.target paper-fab
             e.target.setAttribute('icon', 'add');
+
+            //Firebase
+            var ref = new Firebase(this.$.base.location);
+            var myUid = this.globals.currentUser.uid;
+
+            ref.child("collection").set(this.collection);
           }
           else {
 
@@ -131,8 +156,8 @@
 
         // If this object is not in wishlist
         if (this.wishlist.indexOf(comic) == -1) {
-          
-          // Push into wishlist 
+
+          // Push into wishlist
           this.wishlist.push(comic);
 
           // Modify and show toast (notification)
