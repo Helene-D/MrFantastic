@@ -31,7 +31,7 @@
           <template repeat="{{ r in results }}">
             <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
               <div>
-                <img src="{{ r.image.screen_url }}" alt="{{r.name}}">
+                <img src="{{ r.image.screen_url }}" alt="{{ r.name }}">
               </div>
               <div class="infos" flex>
                 <h2 id="comicName">{{r.name}}</h2>
@@ -39,7 +39,7 @@
                 <p>{{r.publisher.name}}</p>
               </div>
               <paper-icon-button id="addWishlist" icon="favorite" on-click="{{addToWishlist}}"></paper-icon-button>
-              <paper-fab id="addCollection" icon="add" on-click="{{addToCollection}}"></paper-fab>
+              <paper-fab id="addCollection" icon="add" on-click="{{ addToCollection }}" id="{{ r.id }}"></paper-fab>
             </li>
           </template>
         </ul>
@@ -79,7 +79,7 @@
 
       dataChange: function() {
 
-        this.collection = this.data.collection;
+        
 
       },
 
@@ -98,119 +98,106 @@
         this.urlUid = this.uid.replace(/:/, "%3A")
 
       },
+
       addToCollection: function(e, detail, sender) {
 
         var comic = e.target.templateInstance.model.r;
+        console.log(comic)
 
-        // If this object is not in collection
-        if (this.collection.indexOf(comic) == -1) {
-
-          var firstIssueString = comic.first_issue.issue_number;
-          var firstIssue = parseInt(firstIssueString, 10);
-
-          comic.starting_issue = firstIssue;
-
-          var collectionIssue = []
-          for( i = comic.starting_issue ; i <= comic.count_of_issues ; i++ ) {
-            collectionIssue.push( false );
-          };
-          comic.issues = collectionIssue;
-
-          // Push into collection
-          this.collection.push(comic);
-
-          // Modify and show toast (notification)
-          toast_element = document.querySelector('fantastic-app::shadow #success');
-          toast_element.text = 'Added '+ comic.name +' to your collection !';
-          toast_element.show();
-
-          // Set clear icon to e.target paper-fab
-          e.target.setAttribute('icon', 'clear');
-
-          //Firebase
-          var ref = new Firebase(this.$.base.location);
-          ref.child("collection").set(this.collection);
-        }
-        else {
-
-          // If this object is in collection
-          if (this.collection.indexOf(comic) > -1) {
+        var refOne = new Firebase("https://fantastic.firebaseio.com/comics");
+        var refTwo = new Firebase(this.$.base.location+"/collection");
+        
+        function comicIsInCollectionCallback(exists) {
+          if (exists) {
 
             // Remove from collection
-            this.collection.splice(this.collection.indexOf(comic));
+            refTwo.child(comic.id).remove();
+
+            // TODO:
+            // Modify icon
+            e.target.setAttribute('icon', 'add');
 
             // Modify and show toast (notification)
             toast_element = document.querySelector('fantastic-app::shadow #success');
             toast_element.text = 'Deleted '+ comic.name +' from your collection';
             toast_element.show();
 
-            // Set add icon to e.target paper-fab
-            e.target.setAttribute('icon', 'add');
+          } else {
+            
+            // Pushing all issues in the comic 
+            var firstIssueString = comic.first_issue.issue_number;
 
-            //Firebase
-            var ref = new Firebase(this.$.base.location);
-            var myUid = this.globals.currentUser.uid;
+            var firstIssue = parseInt(firstIssueString, 10);
+            comic.starting_issue = firstIssue;
 
-            ref.child("collection").set(this.collection);
+            for( i = comic.starting_issue ; i <= comic.count_of_issues ; i++ ) {
+              refTwo.child(comic.id).child(i).set(false);
+            };
 
-          }
-          else {
-
-            // Show error notification message
-            toast_element = document.querySelector('fantastic-app::shadow #error');
-            toast_element.text = 'You haven\'t '+ comic.name +' in your collection...';
-
-            toast_element.show();
-          }
-
-        }
-      },
-
-      addToWishlist: function(e, detail, sender) {
-
-        var comic = e.target.templateInstance.model.r;
-
-        // If this object is not in wishlist
-        if (this.wishlist.indexOf(comic) == -1) {
-
-          // Push into wishlist
-          this.wishlist.push(comic);
-
-          // Modify and show toast (notification)
-          toast_element = document.querySelector('fantastic-app::shadow #success');
-          toast_element.text = 'Added '+ comic.name +' to your wishlist !';
-          toast_element.show();
-
-          // Change icon color
-          e.target.setAttribute("class", "active")
-
-        }
-        else {
-
-          // If this object is in wishlist
-          if (this.wishlist.indexOf(comic) > -1) {
-
-            // Remove from wishlist
-            this.wishlist.splice(this.wishlist.indexOf(comic));
-
+            // TODO:
+            // Modify icon
+            e.target.setAttribute('icon', 'clear');
+            
             // Modify and show toast (notification)
             toast_element = document.querySelector('fantastic-app::shadow #success');
-            toast_element.text = 'Deleted '+ comic.name +' from your wishlist';
-            toast_element.show();
-
-            // Change icon color
-            e.target.setAttribute("class", "inactive")
-          }
-          else {
-
-            // Show error notification message
-            toast_element = document.querySelector('fantastic-app::shadow #error');
-            toast_element.text = 'You haven\'t '+ comic.name +' in your wishlist...';
+            toast_element.text = 'Added '+ comic.name +' to your collection !';
             toast_element.show();
 
           }
         }
-      }
+
+        refTwo.child(comic.id).once('value', function(snapshot) {
+          var exists = (snapshot.val() !== null || undefined);
+          comicIsInCollectionCallback(exists);
+        });
+
+      },
+
+      // addToWishlist: function(e, detail, sender) {
+
+      //   var comic = e.target.templateInstance.model.r;
+
+      //   // If this object is not in wishlist
+      //   if (this.wishlist.indexOf(comic) == -1) {
+
+      //     // Push into wishlist
+      //     this.wishlist.push(comic);
+
+      //     // Modify and show toast (notification)
+      //     toast_element = document.querySelector('fantastic-app::shadow #success');
+      //     toast_element.text = 'Added '+ comic.name +' to your wishlist !';
+      //     toast_element.show();
+
+      //     // Change icon color
+      //     e.target.setAttribute("class", "active")
+
+      //   }
+      //   else {
+
+      //     // If this object is in wishlist
+      //     if (this.wishlist.indexOf(comic) > -1) {
+
+      //       // Remove from wishlist
+      //       this.wishlist.splice(this.wishlist.indexOf(comic));
+
+      //       // Modify and show toast (notification)
+      //       toast_element = document.querySelector('fantastic-app::shadow #success');
+      //       toast_element.text = 'Deleted '+ comic.name +' from your wishlist';
+      //       toast_element.show();
+
+      //       // Change icon color
+      //       e.target.setAttribute("class", "inactive")
+      //     }
+      //     else {
+
+      //       // Show error notification message
+      //       toast_element = document.querySelector('fantastic-app::shadow #error');
+      //       toast_element.text = 'You haven\'t '+ comic.name +' in your wishlist...';
+      //       toast_element.show();
+
+      //     }
+      //   }
+      // }
 
     });
   })();
