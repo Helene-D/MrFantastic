@@ -22,8 +22,8 @@
 <polymer-element name="fantastic-app" attributes="">
   <template>
     <pvc-globals values="{{ globals }}"></pvc-globals>
-    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://flickering-fire-1231.firebaseio.com/user" log></firebase-element>
-    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://flickering-fire-1231.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
+    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://fantastic.firebaseio.com/user/{{urlUid}}" log></firebase-element>
+    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://fantastic.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
 
     <!-- Navigation bar -->
     <core-toolbar class="medium-tall animate">
@@ -110,6 +110,7 @@
     (function() {
 
       Polymer('fantastic-app',{
+
         ready: function() {
           this.collection = this.$.search.$.comic.collection
           this.wishlist = this.$.search.$.comic.wishlist
@@ -120,21 +121,47 @@
           tabs.addEventListener('core-select', function () {
             pages.selected = tabs.selected;
           });
+
+          this.uid = this.globals.currentUser.uid
+          // Change ":" in uid for "%3A" to match with the url
+          this.urlUid = this.uid.replace(/:/, "%3A")
         },
+
         goBrowse: function() {
           var pages = this.$.slides
           var tabs = this.$.navigation
           pages.selected = 0;
           tabs.selected = 0;
         },
-        toggle: function(e, detail, sender) {
-          //document.querySelector('#collapse').toggle();
-          this.querySelector('fantastic-app::shadow #collapse' + e.target.templateInstance.model.i).toggle();
-          console.log();
+
+        labelChecked: function(e, detail, sender) {
+
+          //console.log(this.collection)
+
+          //Index of comic in collection
+          //TODO: find it
+          //console.log(e.target.templateInstance)
+
+          //Number of issue
+          //console.log(e.target.templateInstance.model.i)
+
+          //State
+          //console.log(e.target.templateInstance.model.issue)
+
+          //Firebase
+          var ref = new Firebase(this.$.base.location);
+          var myUid = this.globals.currentUser.uid;
+          ref.child("collection").set(this.collection);
         },
+
+        toggle: function(e, detail, sender) {
+          this.querySelector('fantastic-app::shadow #collapse' + e.target.templateInstance.model.i).toggle();
+        },
+
         logout: function() {
           this.$.baseLogin.logout();
-        },
+        }
+
       });
 
     })();

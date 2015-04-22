@@ -13,7 +13,7 @@
 <polymer-element name="comicvine-api" attributes="method query limit page numberResults resources">
   <template>
 
-    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://flickering-fire-1231.firebaseio.com/user/{{uid}}" log></firebase-element>
+    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://fantastic.firebaseio.com/user/{{urlUid}}" log></firebase-element>
     <pvc-globals values="{{ globals }}" id="globals"></pvc-globals>
 
     <core-ajax
@@ -56,10 +56,13 @@
     var wishlist = [];
 
     Polymer('comicvine-api',{
+
       ajaxResponse: function(event, response) {
+
         this.results = response.response.results;
         this.numResults = response.response.number_of_total_results;
         this.hasResults = false;
+
         // turn off Initialization
         if (this.numResults != 0) {
           this.init = false;
@@ -71,10 +74,15 @@
             this.displayedResults = this.limit
           }
         }
+
       },
-      dataChanged: function() {
-        console.log(this.data)
+
+      dataChange: function() {
+
+        this.collection = this.data.collection;
+
       },
+
       ready: function() {
 
         // Initialization
@@ -84,10 +92,16 @@
         this.collection = collection;
         this.collectionLength = this.collection.length;
         this.wishlist = wishlist;
+
         this.uid = this.globals.currentUser.uid
+        // Change ":" in uid for "%3A" to match with the url
+        this.urlUid = this.uid.replace(/:/, "%3A")
+
       },
       addToCollection: function(e, detail, sender) {
+
         var comic = e.target.templateInstance.model.r;
+
         // If this object is not in collection
         if (this.collection.indexOf(comic) == -1) {
 
@@ -115,8 +129,6 @@
 
           //Firebase
           var ref = new Firebase(this.$.base.location);
-          var myUid = this.globals.currentUser.uid;
-
           ref.child("collection").set(this.collection);
         }
         else {
@@ -140,18 +152,22 @@
             var myUid = this.globals.currentUser.uid;
 
             ref.child("collection").set(this.collection);
+
           }
           else {
 
             // Show error notification message
             toast_element = document.querySelector('fantastic-app::shadow #error');
             toast_element.text = 'You haven\'t '+ comic.name +' in your collection...';
+
             toast_element.show();
           }
 
         }
       },
+
       addToWishlist: function(e, detail, sender) {
+
         var comic = e.target.templateInstance.model.r;
 
         // If this object is not in wishlist
@@ -167,6 +183,7 @@
 
           // Change icon color
           e.target.setAttribute("class", "active")
+
         }
         else {
 
@@ -190,9 +207,11 @@
             toast_element = document.querySelector('fantastic-app::shadow #error');
             toast_element.text = 'You haven\'t '+ comic.name +' in your wishlist...';
             toast_element.show();
+
           }
         }
       }
+
     });
   })();
 

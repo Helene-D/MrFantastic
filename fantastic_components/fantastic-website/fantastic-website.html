@@ -15,11 +15,11 @@
 <polymer-element name="fantastic-website" attributes="">
   <template>
 
-    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://flickering-fire-1231.firebaseio.com/user" log></firebase-element>
-    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://flickering-fire-1231.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
+    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://fantastic.firebaseio.com/user" log></firebase-element>
+    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://fantastic.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
 
     <template if="{{ !user }}">
-      <fantastic-landing id="landing"></fantastic-landing>
+      <fantastic-landing></fantastic-landing>
     </template>
 
     <template if="{{ user }}">
@@ -31,10 +31,6 @@
   <script>
   (function() {
     Polymer('fantastic-website',{
-
-      domReady : function() {
-
-      }
 
     });
   })();

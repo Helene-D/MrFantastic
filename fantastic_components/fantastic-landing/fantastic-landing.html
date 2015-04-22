@@ -16,23 +16,15 @@
 <!-- PVC Globals element -->
 <link rel="import" href="/bower_components/pvc-globals/pvc-globals.html">
 
-<polymer-element name="fantastic-landing" attributes="">
+<polymer-element name="fantastic-landing">
   <template>
     <paper-menu-button halign="left">
-      <paper-button on-click="{{login}}" hidden?="{{!statusKnown || user}}">log in with google</paper-button>
-      <paper-button on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">log out</paper-button>
-
-<!--       <paper-dropdown class="dropdown" transition="">
-  <core-menu class="menu">
-      <paper-item  hidden?="{{!statusKnown || user}}">Login</paper-item>
-      <paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>
-  </core-menu>
-</paper-dropdown> -->
-
+      <paper-button on-click="{{login}}" id="login" hidden?="{{!statusKnown || user}}">login with google</paper-button>
+      <paper-button on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">logout</paper-button>
     </paper-menu-button>
 
-    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://flickering-fire-1231.firebaseio.com/user" log></firebase-element>
-    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://flickering-fire-1231.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
+    <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://fantastic.firebaseio.com/user" log></firebase-element>
+    <firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://fantastic.firebaseio.com/user" provider="google" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
     <pvc-globals values="{{ globals }}"></pvc-globals>
 
   </template>
@@ -42,15 +34,21 @@
     Polymer('fantastic-landing',{
 
       ready : function(){
+
       },
+
       dataChange: function() {
+      
       },
+
       login: function() {
         this.$.baseLogin.login();
       },
+
       logout: function() {
         this.$.baseLogin.logout();
       },
+
       onLogin: function() {
         this.globals.currentUser = this.user;
         if (this.user){
@@ -64,6 +62,7 @@
           });
         }
       },
+
       onLoginError: function(err) {
         console.log('An error occurred.');
       }
