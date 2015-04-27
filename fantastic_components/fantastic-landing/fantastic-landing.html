@@ -20,7 +20,7 @@
   <template>
     <paper-menu-button halign="left">
       <paper-button on-click="{{login}}" id="login" hidden?="{{!statusKnown || user}}">login with google</paper-button>
-      <paper-button on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">logout</paper-button>
+      <paper-button on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">{{this.globals.currentUser.google.displayName}}logout</paper-button>
     </paper-menu-button>
 
     <firebase-element id="base" on-data-change="{{dataChange}}" data="{{data}}" location="https://fantastic.firebaseio.com/user" log></firebase-element>
@@ -34,7 +34,6 @@
     Polymer('fantastic-landing',{
 
       ready : function(){
-
       },
 
       dataChange: function() {
@@ -51,14 +50,29 @@
 
       onLogin: function() {
         this.globals.currentUser = this.user;
+        
         if (this.user){
-          var ref = new Firebase(this.$.base.location);
+          //Account informations
           var myUid = this.user.uid;
           var myName = this.user.google.displayName;
+          var myPicture = this.user.google.cachedUserProfile.picture
+          var myLocalisation = this.user.google.cachedUserProfile.locale
+          var myGooglePlus = this.user.google.cachedUserProfile.link
+          var myRealName = {
+            family_name: this.user.google.cachedUserProfile.family_name,
+            first_name: this.user.google.cachedUserProfile.given_name
+          }
 
-          ref.child(myUid).set({
+          var ref = new Firebase(this.$.base.location+"/"+myUid);
+
+          ref.child("account").set({
             uid: myUid,
-            username: myName
+            username: myName,
+            real_name: myRealName,
+            lastLogin: Date(),
+            picture: myPicture,
+            locale: myLocalisation,
+            googlePlus: myGooglePlus
           });
         }
       },

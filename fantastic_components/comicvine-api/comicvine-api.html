@@ -28,7 +28,7 @@
       <div class="container">
         <h3 style="margin-left: 10px;">{{displayedResults}} of {{numResults}} Results</h3>
         <ul layout vertical?="{{phoneScreen}}" horizontal?="{{!phoneScreen}}" wrap?="{{!phoneScreen}}">
-          <template repeat="{{ r in results }}">
+          <template repeat="{{ r in results }}" id="comicGenerator">
             <li layout horizontal flex?="{{!phoneScreen}}" class="comic">
               <div>
                 <img src="{{ r.image.screen_url }}" alt="{{ r.name }}">
@@ -39,7 +39,14 @@
                 <p>{{r.publisher.name}}</p>
               </div>
               <paper-icon-button id="addWishlist" icon="favorite" on-click="{{addToWishlist}}"></paper-icon-button>
-              <paper-fab id="addCollection" icon="add" on-click="{{ addToCollection }}" id="{{ r.id }}"></paper-fab>
+
+                <paper-fab id="addCollection" icon="add" on-click="{{ addToCollection }}" class="comic{{ r.id }}"></paper-fab>
+              <<!-- template if="{{isInCollection == true}}">
+                <paper-fab id="addCollection" icon="clear" on-click="{{ addToCollection }}" class="comic{{ r.id }}"></paper-fab>
+              </template>
+              <template if="{{isInCollection == false}}">
+              </template> -->
+
             </li>
           </template>
         </ul>
@@ -67,7 +74,6 @@
         if (this.numResults != 0) {
           this.init = false;
           this.hasResults = true;
-          this.icon = "add";
           if( this.numResults < this.limit ) {
             this.displayedResults = this.numResults;
           } else {
@@ -75,37 +81,70 @@
           }
         }
 
+        // // Trying to handle button if it is in database
+        // if (this.query && this.displayedResults) {
+        //   for ( id in this.data.collection ) {
+        //     console.log(document.querySelector('html /deep/ paper-fab.comic'+id))
+        //     if (document.querySelector('html /deep/ paper-fab.comic'+id)) {
+        //       document.querySelector('html /deep/ paper-fab.comic'+id).setAttribute('icon', 'clear')
+        //     };
+        //   }
+        // };
+
+
+      },
+
+      isInCollection: function(event, detail, sender) {
+        // Trying to handle button if it is in database
+        // if (this.query && this.displayedResults) {
+        //   for ( id in this.data.collection ) {
+        //     console.log(document.querySelector('html /deep/ paper-fab.comic'+id))
+        //     if (document.querySelector('html /deep/ paper-fab.comic'+id)) {
+        //       return false;
+        //     } else {
+        //       return true;
+        //     };
+        //   }
+        // };
       },
 
       dataChange: function() {
-
-        
-
+        //console.log(Object.keys(this.data.collection).length)
+        if (this.query && this.displayedResults) {
+          for ( id in this.data.collection ) {
+            //console.log(document.querySelector('html /deep/ paper-fab.comic'+id))
+            if (document.querySelector('html /deep/ paper-fab.comic'+id)) {
+              document.querySelector('html /deep/ paper-fab.comic'+id).setAttribute('icon', 'clear')
+            } 
+            //else {
+            //   document.querySelector('html /deep/ paper-fab.comic'+id).setAttribute('icon', 'add')
+            // };
+          }
+        }
       },
 
       ready: function() {
 
         // Initialization
         this.init = true;
-        this.api_key = "6141777d4e164896d16ca909cd5ed0b1c867f4f8";
-        this.format = "json";
+        this.api_key = '6141777d4e164896d16ca909cd5ed0b1c867f4f8';
+        this.format = 'json';
         this.collection = collection;
         this.collectionLength = this.collection.length;
         this.wishlist = wishlist;
 
         this.uid = this.globals.currentUser.uid
         // Change ":" in uid for "%3A" to match with the url
-        this.urlUid = this.uid.replace(/:/, "%3A")
-
+        this.urlUid = this.uid.replace(/:/, '%3A')
+        this.collection = this.data
       },
 
       addToCollection: function(e, detail, sender) {
 
         var comic = e.target.templateInstance.model.r;
-        console.log(comic)
 
-        var refOne = new Firebase("https://fantastic.firebaseio.com/comics");
-        var refTwo = new Firebase(this.$.base.location+"/collection");
+        var refOne = new Firebase('https://fantastic.firebaseio.com/comics');
+        var refTwo = new Firebase(this.$.base.location+'/collection');
         
         function comicIsInCollectionCallback(exists) {
           if (exists) {

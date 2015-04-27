@@ -112,7 +112,44 @@
       Polymer('fantastic-app',{
 
         ready: function() {
-          this.collection = this.$.search.$.comic.collection
+          this.uid = this.globals.currentUser.uid
+          this.urlUid = this.uid.replace(/:/, '%3A')
+
+          // ref.on("child_changed", function(snapshot) {
+          // this.collection = {}
+          //   var changedPost = snapshot.val();
+          //   this.collection = changedPost
+          //   console.log(changedPost)
+          // });
+          
+
+          this.collection
+
+          var ref = new Firebase(this.$.base.location+'/collection');
+          
+          ref.orderByValue().on("value", function(snapshot) {
+
+            snapshot.forEach(function(data) {
+
+              var bdd = new Firebase('https://fantastic.firebaseio.com/comics');
+              bdd.child(data.key()).on('value', function(comic) {
+
+                console.log(comic.val())
+                //this.collection.push(comic)
+                console.log('COLLECTION')
+                console.log(this.collection)
+              });
+
+              console.log(data.key());
+              data.key()
+
+            });
+
+          });
+
+          
+
+
           this.wishlist = this.$.search.$.comic.wishlist
 
           // Link between paper-tabs & core-animated-pages
@@ -122,9 +159,6 @@
             pages.selected = tabs.selected;
           });
 
-          this.uid = this.globals.currentUser.uid
-          // Change ":" in uid for "%3A" to match with the url
-          this.urlUid = this.uid.replace(/:/, "%3A")
         },
 
         goBrowse: function() {
@@ -149,9 +183,9 @@
           //console.log(e.target.templateInstance.model.issue)
 
           //Firebase
-          var ref = new Firebase(this.$.base.location);
-          var myUid = this.globals.currentUser.uid;
-          ref.child("collection").set(this.collection);
+          // var ref = new Firebase(this.$.base.location);
+          // var myUid = this.globals.currentUser.uid;
+          // ref.child("collection").set(this.collection);
         },
 
         toggle: function(e, detail, sender) {
